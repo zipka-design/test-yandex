@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Авторизация через Яндекс ID</title>
+  <style>
+    html, body { background: #eee; margin: 0; padding: 20px; font-family: system-ui, sans-serif; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h1 { font-size: 24px; margin: 0 0 20px; }
+    p { color: #555; margin: 0 0 20px; }
+    #container { display: flex; justify-content: center; min-height: 60px; }
+  </style>
+  <script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Вход через Яндекс ID</h1>
+    <p>Нажмите кнопку ниже для мгновенной авторизации</p>
+    <div id="container"></div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      window.YaAuthSuggest.init(
+        {
+          client_id: 'c46f0c53093440c39f12eff95a9f2f93',
+          response_type: 'token',
+          redirect_uri: 'https://examplesite.com/suggest/token'
+        },
+        'https://examplesite.com',
+        {
+          view: 'button',
+          parentId: 'container',
+          buttonView: 'main',
+          buttonTheme: 'light',
+          buttonSize: 'm',
+          buttonBorderRadius: 8
+        }
+      )
+      .then(function(result) {
+        return result.handler();
+      })
+      .then(function(data) {
+        console.log('Сообщение с токеном: ', data);
+        document.body.innerHTML += '<div class="container"><h2>Успешная авторизация</h2><pre>' + JSON.stringify(data, null, 2) + '</pre></div>';
+      })
+      .catch(function(error) {
+        console.log('Что-то пошло не так: ', error);
+        document.body.innerHTML += '<div class="container"><h2>Ошибка</h2><pre>' + JSON.stringify(error, null, 2) + '</pre></div>';
+      });
+    };
+  </script>
+</body>
+</html>
